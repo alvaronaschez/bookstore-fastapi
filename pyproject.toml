@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "bookstore"
+version = "0.1.0"
+description = ""
+authors = ["Alvaro Sanchez <alvarosanchezpalomino@gmail.com>"]
+readme = "README.md"
+packages = [{include = "bookstore"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pydantic = {extras = ["dotenv", "email"], version = "^1.10.2"}
+fastapi = {extras = ["all"], version = "^0.88.0"}
+sqlmodel = "^0.0.8"
+
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.10.0"
+isort = "^5.10.1"
+flake8 = "^6.0.0"
+bandit = "^1.7.4"
+jupyter = "^1.0.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.isort]
+profile = "black"

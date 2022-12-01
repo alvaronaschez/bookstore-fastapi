@@ -1,0 +1,32 @@
+version: '3'
+
+dotenv:
+  - ".env"
+env:
+  DATABASE_URL: postgresql://bookstore:bookstore@127.0.0.1:5432/bookstore
+  POSTGRES_DB: bookstore
+vars:
+  # true if you want to run the python interpreter locally
+  # false if you want to run the python interpreter inside docker
+  LOCAL_MODE: true
+  PROJECT_NAME: bookstore
+  POETRY:
+    sh: if {{.LOCAL_MODE}}; then echo 'poetry'; else echo 'docker compose exec {{.PROJECT_NAME}} poetry'; fi
+  EXCLUDED_SERVICES:
+    sh: if {{.LOCAL_MODE}}; then echo '--scale bookstore=0'; else echo; fi
+silent: true
+tasks:
+  run:
+    cmds:
+      - poetry run uvicorn bookstore.main:app --reload
+  format:
+    desc: run formaters
+    cmds:
+      - '{{.POETRY}} run black .'
+      - '{{.POETRY}} run isort .'
+  lint:
+    desc: run linters
+    cmds:
+      - '{{.POETRY}} run black . --check'
+      - '{{.POETRY}} run isort --check-only .'
+      - '{{.POETRY}} run flake8 {{.PROJECT_NAME}} tests'

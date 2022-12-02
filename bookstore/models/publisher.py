@@ -1,5 +1,5 @@
 from pydantic import HttpUrl
-from sqlmodel import SQLModel
+from sqlmodel import Field
 
 from .base import CamelCaseModel, required
 from .id import Id
@@ -25,5 +25,6 @@ class PublisherOut(PublisherBase):
     id: Id
 
 
-class PublisherInDb(SQLModel):
-    pass
+class PublisherInDb(PublisherBase, table=True):
+    __tablename__ = "publishers"
+    id: int = Field(primary_key=True, ge=1)

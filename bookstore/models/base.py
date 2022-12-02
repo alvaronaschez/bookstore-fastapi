@@ -1,6 +1,7 @@
 from typing import Type, get_type_hints
 
 from pydantic import BaseModel, Extra
+from sqlmodel import SQLModel
 
 
 def required(required: list[str]):
@@ -28,7 +29,7 @@ def to_camelcase(string: str) -> str:
     return "".join(words)
 
 
-class CamelCaseModel(BaseModel):
+class CamelCaseModel(SQLModel):
     class Config:
         extra = Extra.forbid
         alias_generator = to_camelcase
